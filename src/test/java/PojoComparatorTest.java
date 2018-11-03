@@ -9,34 +9,29 @@ import java.util.List;
 
 public class PojoComparatorTest {
 
-    Person alban = new Person("Alban", "Clevy", "1234");
-    Person alban2 = new Person("Alban", "Clevy", "123");
-    Person audrey = new Person("Audrey", "Clevy","67889");
-    String test = "Test";
+    private Person alban = new Person("Alban", "Clevy", "1234");
+    private Person alban2 = new Person("Alban", "Clevy", "123");
+    private Person audrey = new Person("Audrey", "Clevy","67889");
+    private String test = "Test";
 
     @Test
     public void testClassName() {
-
         PojoComaparator comparator = new PojoComaparator();
 
         Assertions.assertNull(comparator.compare(test,alban));
         Assertions.assertNotNull(comparator.compare(alban,audrey));
     }
 
-
     @Test
-    public void testNumberOfDifference() {
-
+    public void testNumberOfDifferences() {
         PojoComaparator comparator = new PojoComaparator();
 
         List<Result> resultList = comparator.compare(alban,audrey);
         Assertions.assertEquals(2,resultList.size());
-
-        //  Assertions.assertNotNull(comparator.compare(alban,audrey));
     }
+
     @Test
     public void testDifference() {
-
         PojoComaparator comparator = new PojoComaparator();
 
         List<Result> resultList = comparator.compare(alban, alban2);
@@ -48,7 +43,6 @@ public class PojoComparatorTest {
 
     @Test
     public void testDifferenceWithExclude() {
-
         PojoComaparator comparator = new PojoComaparator();
 
         List<Result> resultList = comparator.compare(alban, alban2,"telephone");
