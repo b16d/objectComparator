@@ -11,41 +11,36 @@ public class PojoComaparator {
         List<Result> resultList = new ArrayList<>();
 
         if (object1.getClass().getName().equals(object2.getClass().getName())) {
+            List<String> listOfFilteredField = Arrays.asList(listOfExcludedFields);
 
             Field[] listOfField = object1.getClass().getDeclaredFields();
 
-            //Remove Unused Field
-            List<String> listOfFilteredField = Arrays.asList(listOfExcludedFields);
-
-
             for (Field field : listOfField) {
 
+                //Do nothing if an excluded field if found
                 if (listOfFilteredField.contains(field.getName())) {
                    break;
                 }
 
-                System.out.println(field.getName());
+                //Start to compare field
                 try {
-                    Field fieldTempo = object1.getClass().getDeclaredField(field.getName());
-                    fieldTempo.setAccessible(true);
+                    field.setAccessible(true);
 
-                    String value1 = fieldTempo.get(object1).toString();
-                    String value2 = fieldTempo.get(object2).toString();
+                    //get value from both object - force
+                    Object value1 = field.get(object1);
+                    Object value2 = field.get(object2);
 
+                    //Compare object
                     if (!value1.equals(value2)) {
-                        resultList.add(new Result(field.getName(), value1,value2));
+                        //Force String fir the result
+                        resultList.add(new Result(field.getName(), value1.toString(),value2.toString()));
                     }
-                } catch (NoSuchFieldException | IllegalAccessException e) {
+                } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 }
             }
-            System.out.println(listOfField);
-
             return resultList;
         }
         return null;
     }
-
-
-
 }
